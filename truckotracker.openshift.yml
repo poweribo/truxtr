@@ -1,0 +1,32 @@
+sfdata:
+  hostUrl: https://data.sfgov.org
+  contextPath: /resource/rqzj-sfat.json
+  appToken: provide_your_apptoken
+  updateInterval: 1 # hours
+
+redis:
+  hostname: localhost
+  port: 6379
+  password:
+
+database:
+  driverClass: org.h2.Driver
+  url: jdbc:h2:mem:tot
+  user: sa
+  password:
+  properties:
+    hibernate.dialect: org.hibernate.dialect.H2Dialect
+    hibernate.hbm2ddl.auto: create
+    hibernate.jdbc.batch_size: 50
+
+logging:
+  level: INFO
+
+server:
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+      type: http
+      bindHost: 127.2.184.129
+      port: 8080

@@ -1,0 +1,3 @@
+#!/bin/bash
+cd $OPENSHIFT_REPO_DIR
+mvn -f $OPENSHIFT_REPO_DIR/POM.xml -s $OPENSHIFT_REPO_DIR/.openshift/settings.xml package > ${OPENSHIFT_DIY_LOG_DIR}/truckotracker.build.log 2>&1 &

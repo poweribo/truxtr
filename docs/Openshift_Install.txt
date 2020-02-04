@@ -1,0 +1,88 @@
+1) Create DIY Cartridge in Openshift
+2) git clone ssh://53646ed14382ec8252000ca1@truxtr-ibo.rhcloud.com/~/git/truxtr.git/ (Provided by Openshift)
+3) cd truxtr/
+4) copy files into the folder
+5) edit action hooks
+6) git add .
+7) git commit -a -m 'ssss'
+8) git push
+9) rhc cartridge list
+10) rhc app create truxtr diy-0.1
+11) rhc app create truxtr jenkins-1
+  User: admin
+  Password: ---password---
+
+12) rhc cartridge add "http://cartreflect-claytondev.rhcloud.com/reflect?github=smarterclayton/openshift-redis-cart" -a truxtr
+    guide: https://www.openshift.com/blogs/enabling-redis-for-your-app
+
+OPENSHIFT_REDIS_SENTINEL_PORT=26379
+OPENSHIFT_REDIS_PORT=16379
+OPENSHIFT_REDIS_HOST=127.2.184.130
+OPENSHIFT_REDIS_DIR=/var/lib/openshift/53646ed14382ec8252000ca1/redis/
+OPENSHIFT_REDIS_PATH_ELEMENT=/var/lib/openshift/53646ed14382ec8252000ca1/redis/versions/2.6/bin
+REDIS_PASSWORD=ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5
+OPENSHIFT_REDIS_IDENT=smarterclayton:redis:2.6:0.1.0
+OPENSHIFT_REDIS_SENTINEL_HOST=127.2.184.131
+REDIS_CLI=-h 127.2.184.130 -p 16379 -a ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5
+
+to start redis on server:
+
+> redis-cli $REDIS_CLI
+
+
+13) Manually start DIY cartridge
+
+
+rhc ssh truxtr
+-----------------------admin---------------------
+
+https://github.com/smarterclayton/openshift-redis-cart
+
+cd $OPENSHIFT_DIY_LOG_DIR
+
+
+rhc app reload -a truxtr
+
+rhc app stop -a truxtr   // wont work if process is a zombie. has to be killed 
+rhc app start -a truxtr
+rhc restart-cartridge redis -a truxtr
+
+
+build:
+
+cd $OPENSHIFT_REPO_DIR
+mvn -f $OPENSHIFT_REPO_DIR/POM.xml -s $OPENSHIFT_REPO_DIR/.openshift/settings.xml package
+
+start:
+
+cd $OPENSHIFT_REPO_DIR
+java -Ddw.server.connector.bindHost=$OPENSHIFT_DIY_IP -Ddw.server.connector.port=$OPENSHIFT_DIY_PORT -Ddw.redis.hostname=$OPENSHIFT_REDIS_HOST -Ddw.redis.port=$OPENSHIFT_REDIS_PORT -Ddw.redis.password=$REDIS_PASSWORD -jar target/truckotracker-1.0-SNAPSHOT.jar server truckotracker.openshift.yml
+
+w/o host/port:
+
+cd $OPENSHIFT_REPO_DIR
+java -Ddw.redis.hostname=$OPENSHIFT_REDIS_HOST -Ddw.redis.port=$OPENSHIFT_REDIS_PORT -Ddw.redis.password=$REDIS_PASSWORD -jar target/truckotracker-1.0-SNAPSHOT.jar server truckotracker.openshift.yml
+
+-------------------------------------------------
+
+new ?
+
+
+-Ddw.server.connector.bindHost=$OPENSHIFT_DIY_IP -Ddw.server.connector.port=$OPENSHIFT_DIY_PORT
+
+server:
+  applicationConnectors:
+    - type: http
+      bindHost: @OPENSHIFT_DIY_IP@
+      port: @OPENSHIFT_DIY_PORT@
+
+old
+
+http:
+  bindHost: @OPENSHIFT_DIY_IP@
+  adminPort: @OPENSHIFT_DIY_PORT@
+
+
+
+
+mvn -f $OPENSHIFT_REPO_DIR/POM.xml -s $OPENSHIFT_REPO_DIR/.openshift/settings.xml package;java -Ddw.redis.hostname=$OPENSHIFT_REDIS_HOST -Ddw.redis.port=$OPENSHIFT_REDIS_PORT -Ddw.redis.password=$REDIS_PASSWORD -jar target/truckotracker-1.0-SNAPSHOT.jar server truckotracker.openshift.yml

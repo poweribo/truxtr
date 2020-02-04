@@ -1,0 +1,23 @@
+{
+    "status" : "EXPIRED",
+    "expirationdate" : "2014-03-15T00:00:00",
+    "permit" : "13MFF-0094",
+    "block" : "5338",
+    "received" : "Mar 22 2013  3:27PM",
+    "facilitytype" : "Truck",
+    "blocklot" : "5338006",
+    "locationdescription" : "03RD ST: QUESADA AVE to BAY VIEW ST \\ REVERE AVE (5000 - 5098) -- WEST --",
+    "cnn" : "214201",
+    "priorpermit" : "0",
+    "approved" : "2013-06-28T09:47:19",
+    "schedule" : "http://bsm.sfdpw.org/PermitsTracker/reports/report.aspx?title=schedule&report=rptSchedule&params=permit=13MFF-0094&ExportPDF=1&Filename=13MFF-0094_schedule.pdf",
+    "address" : "5048 03RD ST",
+    "applicant" : "Your Community Foods",
+    "lot" : "006",
+    "fooditems" : "Wraps: Sandwiches: Chicken Wings: Fries: Lemonade: Juices",
+    "longitude" : "-122.391768324832",
+    "latitude" : "37.7327944920286",
+    "objectid" : "429253",
+    "y" : "2094818.262",
+    "x" : "6014631.704"
+}

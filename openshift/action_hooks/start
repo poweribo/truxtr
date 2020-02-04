@@ -1,0 +1,7 @@
+#!/bin/bash
+# The logic to start up your application should be put in this
+# script. The application will work only if it binds to
+# $OPENSHIFT_DIY_IP:8080
+#nohup $OPENSHIFT_REPO_DIR/diy/testrubyserver.rb $OPENSHIFT_DIY_IP $OPENSHIFT_REPO_DIR/diy > $OPENSHIFT_DIY_DIR/logs/server.log 2>&1 &
+cd $OPENSHIFT_REPO_DIR
+nohup java -Ddw.redis.hostname=$OPENSHIFT_REDIS_HOST -Ddw.redis.port=$OPENSHIFT_REDIS_PORT -Ddw.redis.password=$REDIS_PASSWORD -jar target/truckotracker-1.0-SNAPSHOT.jar server truckotracker.openshift.yml > ${OPENSHIFT_DIY_LOG_DIR}/truckotracker.log 2>&1 &

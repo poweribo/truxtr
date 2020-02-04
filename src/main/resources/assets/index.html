@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Truck-O-Tracker</title>
+
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="css/foodtruck.css" media="all" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.2/typeahead.bundle.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&sensor=false"></script>
+
+    <script type="text/javascript" src="js/jquery.geocomplete.js"></script>
+    <script type="text/javascript" src="js/foodtruckapp.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+        <img src="img/truxtr.png" width="400" alt="Truxtr - Mapping your next great food meal">
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div id="inputForm" class="well">
+                <!-- the container for input form -->
+            </div>
+            <div id="primary-content">
+                <!-- the container that gets populated with the index -->
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="map_canvas"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/template" id="formTemplate">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <input id="geocomplete" name="geocomplete" type="text" class="form-control" placeholder="Enter Location"/>
+            <!--
+            <button id="find" class="find btn btn-large btn-info" type="submit">Find</button>
+            -->
+        </div>
+        <div id="keywordautocomplete" class="form-group">
+            <input id="keyword" class="form-control" type="text" placeholder="Enter Keyword" >
+            <button id="search" class="search btn btn-large btn-info" type="submit">Search</button>
+        </div>
+        <input id="latitude" name="lat" type="hidden">
+        <input id="longitude" name="lng" type="hidden">
+    </form>
+</script>
+
+<!-- the index container -->
+<script type="text/template" id="indexTemplate">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th width="25%">Name</th>
+            <th width="25%">Address</th>
+            <th width="40%">Food Items</th>
+            <th width="10%">Distance</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</script>
+
+<!-- the row template, renders once for each item in the index -->
+<script type="text/template" id="rowTemplate">
+    <td>
+        <a href="#foodtruck/<%= id %>/view"><%= applicant %></a>
+    </td>
+    <td><%= address %></td>
+    <td><%= fooditems %></td>
+    <td><%= distanceFromLoc %></td>
+</script>
+
+<!-- the show template -->
+<script type="text/template" id="showTemplate">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#foodtrucks/index">All Food Trucks</a>
+        </li>
+        <li class="active">View Food Truck</li>
+    </ol>
+
+    <h2>
+        <%= applicant %>
+        <small>by: <%= address %></small>
+    </h2>
+    <p style="white-space:pre-wrap;"><%= fooditems %></p>
+    <hr/>
+</script>
+
+<script type="text/javascript">
+
+    var router = new APP.FoodTruckRouter({
+        foodtrucks: new APP.FoodTruckCollection()
+    });
+
+    $(document).ready(function() {
+        APP.createLocationLookup();
+        APP.createKeywordLookup();
+    });
+
+    Backbone.history.start();
+</script>
+
+</body>
+</html>
